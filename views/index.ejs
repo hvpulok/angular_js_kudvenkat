@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myModule">
+  <head >
+    <title>Angular</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="style.css" />  
+      
+      <!-- jQuery CDN Link -->
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+
+  <!-- BootstrapCDN -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <!-- BootstrapCDN Complete JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+    <script src="scripts/script.js"></script>
+    
+  </head>
+  <body  ng-controller="myController">
+    <div class="container">
+        
+      
+      <h1>This is Angular Practice Page</h1>
+      <hr>
+      <div class="panel">
+            <label>Name: </label>
+            <input type="text" name="name" ng-model = "employee.name">
+            <br>
+            Employe: {{employee.name}}, {{employee.age}}, {{employee.gender}}
+      </div>
+      <div>
+            <img ng-src="{{employee.icon}}" style="width:200px" />
+      </div>
+      
+      <!--example of auto created model-->
+        <div >
+            <label>Age: </label>
+            <input type="text" name="age" ng-model = "age">
+            <br>
+            Your input age is : {{age}}
+      </div>
+      <hr></hr>
+      <!--example of ng-repeat-->
+      <h1>Example of ng-repeat</h1>
+    <div>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Gender</th>
+            <th>Salary</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="employee in allEmployees">
+            <td>{{employee.firstName}}</td>
+            <td>{{employee.lastName}}</td>
+            <td>{{employee.gender}}</td>
+            <td>{{employee.salary}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <hr></hr>
+      <!--example of nested ng-repeat-->
+      <h1>Example of nested ng-repeat</h1>
+    <ul ng-repeat="country in countries">
+        <li>{{country.name}} - Index = {{$index}}
+            <ul ng-repeat="city in country.cities">
+                {{city.name}} - Parent Index= {{$parent.$index}}, Index= {{$index}}
+            </ul>
+            
+        </li>
+    </ul>
+    
+    <!--example of event handler-->
+      <h1>Example of event handler</h1>
+    <div>
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Likes</th>
+            <th>Desilikes</th>
+            <th>Like/Dislike</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="technology in technologies">
+            <td>{{technology.name}}</td>
+            <td>{{technology.likes}}</td>
+            <td>{{technology.dislikes}}</td>
+            <td>
+                <input ng-click="increaseLike(technology)" class="btn btn-info" type="button" name="btn-like" value="Like"/>
+                <input ng-click="increaseDislike(technology)" class="btn btn-warning" type="button" name="btn-dislike" value="Dislike"/>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <hr></hr>
+    <!--Example of filter-->
+    <h1>Example of Header</h1>
+      <div>
+        <label>Select Number of Rows to View : </label>
+          <select ng-model = "rowLimit">
+            <option value="1">1</option>
+            <option value="3">3</option>
+            <option value="10">10</option>
+          </select>
+      </div>
+      <div>
+        <label>Select Sort Order : </label>
+          <select ng-model = "sortColumn">
+            <option value="firstName">First Name Asc</option>
+            <option value="lastName">Last Name Asc</option>
+            <option value="gender">Gender Asc</option>
+            <option value="dateOfBirth">Date of Birth Asc</option>
+            <option value="salary">Salary Asc</option>
+          </select>
+      </div>
+    
+
+      
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+                <th ng-click="sortData('firstName')">
+                  First Name <div ng-class= getSortClass('firstName')></div>
+                </th>
+                <th ng-click="sortData('lastName')">
+                  Last Name <div ng-class= getSortClass('lastName')></div>
+                </th>
+                <th ng-click="sortData('gender')">
+                  Gender <div ng-class= getSortClass('gender')></div>
+                </th>
+                <th ng-click="sortData('dateOfBirth')">
+                  Date of Birth <div ng-class= getSortClass('dateOfBirth')></div>
+                </th>
+                <th ng-click="sortData('salary')">
+                  Salary <div ng-class= getSortClass('salary')></div>
+                </th>
+                <th ng-click="sortData('salary')">
+                  Salary ($) <div ng-class= getSortClass('salary')></div>
+                </th>
+                
+            </tr>
+          </thead>
+          <tr ng-repeat="employee in allEmployees | limitTo: rowLimit | orderBy: sortColumn:reverseSort">
+            <td>{{employee.firstName | uppercase}}</td>
+            <td>{{employee.lastName }}</td>
+            <td>{{employee.gender | lowercase}}</td>
+            <td>{{employee.dateOfBirth | date:"dd-MM-yyyy"}}</td>
+            <td>{{employee.salary | number}}</td>
+            <td>{{employee.salary | currency:"$"}}</td>
+          </tr>
+        </table>
+        
+        
+    </div>  
+  </body>
+</html>
